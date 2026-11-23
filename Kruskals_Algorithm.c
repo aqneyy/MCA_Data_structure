@@ -9,7 +9,6 @@ struct Edge
 
 int parent[MAX];
 
-// Find function
 int find(int i)
 {
     while (parent[i] != i)
@@ -19,7 +18,6 @@ int find(int i)
     return i;
 }
 
-// Union function
 void union_set(int i, int j)
 {
     int a = find(i);
@@ -30,21 +28,23 @@ void union_set(int i, int j)
 
 int main()
 {
-    struct Edge edges[MAX];
+    struct Edge edges[MAX], temp;
     int n, e;
+    int i, j;
+    int u, v, w;
+    int pu, pv;
+    int count = 0;
     int totalcost = 0;
 
-    // Read number of vertices and edges
     printf("Enter number of vertices: ");
     scanf("%d", &n);
 
     printf("Enter number of edges: ");
     scanf("%d", &e);
 
-    // Read edges
     printf("Enter each edge (u v weight):\n");
 
-    for (int i = 0; i < e; i++)
+    for (i = 0; i < e; i++)
     {
         scanf("%d%d%d",
               &edges[i].u,
@@ -52,46 +52,43 @@ int main()
               &edges[i].w);
     }
 
-    // Sort edges using Bubble Sort
-    for (int i = 0; i < e - 1; i++)
+   
+    for (i = 0; i < e - 1; i++)
     {
-        for (int j = 0; j < e - i - 1; j++)
+        for (j = 0; j < e - i - 1; j++)
         {
             if (edges[j].w > edges[j + 1].w)
             {
-                struct Edge temp = edges[j];
-
+                temp = edges[j];
                 edges[j] = edges[j + 1];
                 edges[j + 1] = temp;
             }
         }
     }
 
-    // Initialize parent array
-    for (int i = 0; i < n; i++)
+   
+    for (i = 0; i < n; i++)
     {
         parent[i] = i;
     }
 
     printf("\nEdges in the minimum spanning tree:\n");
 
-    int count = 0;
-
-    // Kruskal's Algorithm
-    for (int i = 0; i < e && count < n - 1; i++)
+   
+    for (i = 0; i < e && count < n - 1; i++)
     {
-        int u = edges[i].u;
-        int v = edges[i].v;
-        int w = edges[i].w;
+        u = edges[i].u;
+        v = edges[i].v;
+        w = edges[i].w;
 
-        int pu = find(u);
-        int pv = find(v);
+        pu = find(u);
+        pv = find(v);
 
         if (pu != pv)
         {
             printf("%d - %d : %d\n", u, v, w);
 
-            totalcost += w;
+            totalcost = totalcost + w;
 
             union_set(pu, pv);
 
@@ -99,7 +96,6 @@ int main()
         }
     }
 
-    // Display result
     if (count == n - 1)
     {
         printf("Total cost of MST = %d\n", totalcost);
